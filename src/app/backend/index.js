@@ -15,8 +15,7 @@ app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 
 mongoose
-  .connect('mongodb://localhost:27017/chats')
-  .then(() => {
+  .connect("mongodb+srv://bikramdhami334:lg9GERG9ZVQnRvry@cluster0.j7jdqso.mongodb.net/chats?retryWrites=true&w=majority&appName=Cluster0").then(() => {
     console.log('Connected to MongoDB');
   })
   .catch(error => {
@@ -69,7 +68,15 @@ app.post('/login', async (req, res) => {
     res.status(500).json({message: 'Error loggin In'});
   }
 });
-
+ app.get("/test",async(req,res)=>{
+   const {email}=req.body;
+   console.log(email)
+   const user=await User.findOne({email:email});
+   if (!user) {
+    res.status(404).json({message:"user not found"})
+   }
+   res.status(200).json(user);
+ })
 app.get('/users/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
